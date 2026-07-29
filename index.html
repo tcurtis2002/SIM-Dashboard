@@ -1,0 +1,266 @@
+!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIEM Command Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body class="dark-theme">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand">
+          <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Toggle sidebar">☰</button>
+          <div class="brand-copy">
+            <h3>SIEM Console</h3>
+            <p>Enterprise monitoring</p>
+          </div>
+        </div>
+
+        <nav class="nav-links">
+          <a class="active" href="#"><span>Overview</span></a>
+          <a href="#"><span>Alerts</span></a>
+          <a href="#"><span>Investigations</span></a>
+          <a href="#"><span>Assets</span></a>
+          <a href="#"><span>Reports</span></a>
+        </nav>
+
+        <div class="sidebar-card">
+          <p class="eyebrow">System state</p>
+          <strong>Healthy</strong>
+          <span>All critical services are online</span>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <header class="topbar">
+          <div class="brand-block">
+            <div class="brand-mark">🛡️</div>
+            <div>
+              <p class="eyebrow">SOC + NOC Command Center</p>
+              <h1>SIEM Dashboard</h1>
+              <p class="subtitle">
+                Real-time visibility into suspicious activity, event flow, and service health.
+              </p>
+            </div>
+          </div>
+          <div class="header-actions">
+            <div class="topbar-widget">
+              <span class="widget-label">Analyst</span>
+              <strong>Maya Chen</strong>
+            </div>
+            <div class="topbar-widget status-widget">
+              <span class="widget-label">Incidents</span>
+              <strong>2 active</strong>
+            </div>
+            <button id="themeToggle" class="theme-toggle" type="button">☀ Light mode</button>
+            <div class="chip success">● Monitoring live</div>
+            <div class="chip">Last sync <span id="lastSync">--:--</span></div>
+          </div>
+        </header>
+
+        <section class="hero-grid">
+          <article class="hero-card">
+            <div class="hero-top">
+              <div>
+                <p class="eyebrow">Threat posture</p>
+                <h2>Adaptive monitoring for modern ops</h2>
+                <p>
+                  Correlated logs, alert triage, and operational insight are brought together to support faster response and stronger incident awareness.
+                </p>
+              </div>
+              <div class="pulse-pill">● Live telemetry</div>
+            </div>
+            <div class="hero-metrics">
+              <div class="metric-pill">
+                <strong>12</strong>
+                <span>Critical alerts</span>
+              </div>
+              <div class="metric-pill">
+                <strong>94%</strong>
+                <span>Coverage</span>
+              </div>
+              <div class="metric-pill">
+                <strong>5m</strong>
+                <span>MTTR</span>
+              </div>
+            </div>
+            <div class="hero-footer">
+              <div class="signal-card accent">90% <span>Normalized</span></div>
+              <div class="signal-card">24/7 <span>Coverage</span></div>
+            </div>
+          </article>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <p>Critical alerts</p>
+              <h3>7</h3>
+              <span>Needs escalation</span>
+            </article>
+            <article class="stat-card">
+              <p>Events today</p>
+              <h3>2.3k</h3>
+              <span>+18% vs. yesterday</span>
+            </article>
+            <article class="stat-card">
+              <p>Open incidents</p>
+              <h3>4</h3>
+              <span>2 high priority</span>
+            </article>
+            <article class="stat-card">
+              <p>Mean time to response</p>
+              <h3>5m</h3>
+              <span>Within SLA</span>
+            </article>
+          </div>
+        </section>
+
+        <div class="filter-row" role="toolbar" aria-label="Alert filters">
+          <button class="filter-btn active" data-filter="all" type="button">All alerts</button>
+          <button class="filter-btn" data-filter="critical" type="button">Critical</button>
+          <button class="filter-btn" data-filter="warning" type="button">Warning</button>
+          <button class="filter-btn" data-filter="info" type="button">Info</button>
+        </div>
+
+        <main class="dashboard-grid">
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Live alerts</h3>
+              <div class="panel-actions">
+                <input id="alertSearch" class="search-input" type="search" placeholder="Search alerts" />
+                <button type="button">Investigate</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="alert-table">
+                <thead>
+                  <tr>
+                    <th>Alert</th>
+                    <th>Context</th>
+                    <th>Severity</th>
+                  </tr>
+                </thead>
+                <tbody id="alertsList"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Monitoring coverage</h3>
+            </div>
+            <div class="progress-list">
+              <div class="progress-row">
+                <span>Firewall</span>
+                <div class="bar"><div style="width: 96%"></div></div>
+              </div>
+              <div class="progress-row">
+                <span>Identity</span>
+                <div class="bar"><div style="width: 91%"></div></div>
+              </div>
+              <div class="progress-row">
+                <span>Endpoints</span>
+                <div class="bar"><div style="width: 88%"></div></div>
+              </div>
+              <div class="progress-row">
+                <span>Cloud apps</span>
+                <div class="bar"><div style="width: 82%"></div></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel wide">
+            <div class="panel-header">
+              <h3>Incident timeline</h3>
+              <span class="muted">Updated 2 mins ago</span>
+            </div>
+            <div class="timeline-chart">
+              <svg viewBox="0 0 420 180" class="chart-svg" role="img" aria-label="Animated incident trend chart">
+                <path class="grid-line" d="M20 150H400" />
+                <path class="grid-line" d="M20 110H400" />
+                <path class="grid-line" d="M20 70H400" />
+                <path id="trendLine" class="trend-line" d="M20 130 C60 114 88 104 120 95 S190 75 230 81 S310 98 360 54 S388 44 400 40" />
+                <circle id="trendDotA" class="trend-dot" cx="120" cy="95" r="6" />
+                <circle id="trendDotB" class="trend-dot" cx="230" cy="81" r="6" />
+                <circle id="trendDotC" class="trend-dot" cx="360" cy="54" r="6" />
+              </svg>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <strong>09:42</strong>
+                <p>Failed login bursts detected across VPN gateways.</p>
+              </div>
+              <div class="timeline-item">
+                <strong>10:15</strong>
+                <p>Cloud storage latency spike flagged by health monitor.</p>
+              </div>
+              <div class="timeline-item">
+                <strong>10:31</strong>
+                <p>Alert correlated with suspicious IP reputation change.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Operational health</h3>
+            </div>
+            <div class="health-bars">
+              <div>
+                <span>Network</span>
+                <div class="bar"><div style="width: 90%"></div></div>
+              </div>
+              <div>
+                <span>Servers</span>
+                <div class="bar"><div style="width: 84%"></div></div>
+              </div>
+              <div>
+                <span>Support queue</span>
+                <div class="bar"><div style="width: 76%"></div></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Severity summary</h3>
+            </div>
+            <div class="summary-stack">
+              <div class="summary-item">
+                <span>High</span>
+                <strong>3</strong>
+              </div>
+              <div class="summary-item">
+                <span>Medium</span>
+                <strong>11</strong>
+              </div>
+              <div class="summary-item">
+                <span>Low</span>
+                <strong>28</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Recent events</h3>
+            </div>
+            <ul class="event-list">
+              <li>Firewall rule update applied</li>
+              <li>Backup completed successfully</li>
+              <li>Phishing campaign detected</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>
